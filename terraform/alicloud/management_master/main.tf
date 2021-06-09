@@ -11,6 +11,7 @@ module "launch_vpc" {
   vpc_name = var.vpc_name
   vpc_cidr = var.vpc_cidr
   public_vswitchs_map = var.public_vswitchs_map
+  private_vswitchs_map = {}
   vswitchs_bit_length = var.vswitchs_bit_length
 }
 
