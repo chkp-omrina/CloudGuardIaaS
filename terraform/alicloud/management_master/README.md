@@ -1,6 +1,6 @@
 # Check Point Management master Server Terraform module for AliCloud
 
-Terraform module which deploys a Check Point Management Server into an existing VPC on AliCloud.
+Terraform module which deploys a Check Point Management Server into a new VPC on AliCloud.
 
 These types of Terraform resources are supported:
 * [Instance](https://www.terraform.io/docs/providers/alicloud/r/instance.html) - management Instance
@@ -13,13 +13,13 @@ These types of Terraform resources are supported:
   
 ## Configuration
 - Best practice is to configure credentials in the Environment variables - [Alicloud provider](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs)
-- Static credentials can be provided by adding an alicloud_access_key_ID and alicloud_secret_access_key in management_master/**terraform.tfvars** file as follows:
+- Static credentials can be provided by adding an alicloud_access_key_ID and alicloud_secret_access_key in management-master/**terraform.tfvars** file as follows:
 ```
 region = "us-east-1"
 alicloud_access_key_ID = "12345"
 alicloud_secret_access_key = "12345"
 ```
-  - In addition, you need to call these variables in the provider and pass it on to the management module in management_master/**main.tf** file as follows:
+  - In addition, you need to call these variables in the provider and pass it on to the management module in management-master/**main.tf** file as follows:
   ```
   provider "alicloud" {
     region     = var.region
@@ -38,7 +38,7 @@ alicloud_secret_access_key = "12345"
   ```
 
 ## Usage
-- Fill all variables in the management_master/**terraform.tfvars** file with proper values (see below for variables descriptions).
+- Fill all variables in the management-master/**terraform.tfvars** file with proper values (see below for variables descriptions).
 - From a command line initialize the Terraform configuration directory:
         terraform init
 - Create an execution plan:
@@ -53,13 +53,14 @@ alicloud_secret_access_key = "12345"
 | vswitch_id     | Vswitch id                     | string    | n/a   | n/a   | yes  |
 |   |   |   |   |   |   |
 | instance_name | AliCloud instance name to launch   | string    | n/a   | "CP-Management-tf"  | no  |
-| instance_type | AliCloud instance type  | string  | - m5.large <br/> - m5.xlarge <br/> - m5.2xlarge <br/> - m5.4xlarge <br/> - m5.12xlarge <br/> - m5.24xlarge  | m5.xlarge  | no  |
+| instance_type | AliCloud instance type  | string  | - ecs.hfg6.xlarge <br/> - ecs.hfg6.2xlarge <br/> - ecs.hfg6.4xlarge <br/> - ecs.hfg6.8xlarge <br/> - ecs.hfg6.14xlarge  | "ecs.hfg6.xlarge"  | no  |
 | key_name | The ECS Key Pair name to allow SSH access to the instances | string  | n/a | n/a | yes |
 | eip  | Allocate and associate an elastic IP with the launched instance  | bool  | true/false  | true  | no  |
 | volume_size  | Root volume size (GB)  | number  | n/a  | 100  | no  |
+| ram_role_name | A predefined RAM role name to attach to the security management instance | string | n/a | "" | no |
 | instance_tags  | (Optional) A map of tags as key=value pairs. All tags will be added to the Management ECS Instance  | map(string)  | n/a  | {}  | no  |
 |   |   |   |   |   |   |
-| gateway_version | Gateway version & license | string | - R81-BYOL | R81-BYOL |
+| gateway_version | Gateway version and license | string | - R81-BYOL | R81-BYOL |
 | admin_shell  | Set the admin shell to enable advanced command line configuration  | string  | - /etc/cli.sh <br/> - /bin/bash <br/> - /bin/csh <br/> - /bin/tcsh | /etc/cli.sh | no |
 | password_hash | (Optional) Admin user's password hash (use command \"openssl passwd -6 PASSWORD\" to get the PASSWORD's hash) | string | n/a | "" | no |
 | hostname  | (Optional) Management prompt hostname  | string  | n/a  | n/a  | no  |

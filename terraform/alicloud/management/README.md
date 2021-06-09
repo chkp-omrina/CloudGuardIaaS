@@ -43,10 +43,11 @@ provider "alicloud" {
 | vswitch_id     | Vswitch id                     | string    | n/a   | n/a   | yes  |
 |   |   |   |   |   |   |
 | instance_name | AliCloud instance name to launch   | string    | n/a   | "CP-Management-tf"  | no  |
-| instance_type | AliCloud instance type  | string  | - m5.large <br/> - m5.xlarge <br/> - m5.2xlarge <br/> - m5.4xlarge <br/> - m5.12xlarge <br/> - m5.24xlarge  | m5.xlarge  | no  |
+| instance_type | AliCloud instance type  | string  | - ecs.hfg6.xlarge <br/> - ecs.hfg6.2xlarge <br/> - ecs.hfg6.4xlarge <br/> - ecs.hfg6.8xlarge <br/> - ecs.hfg6.14xlarge  | "ecs.hfg6.xlarge"  | no  |
 | key_name | The ECS Key Pair name to allow SSH access to the instances | string  | n/a | n/a | yes |
 | eip  | Allocate and associate an elastic IP with the launched instance  | bool  | true/false  | true  | no  |
 | volume_size  | Root volume size (GB)  | number  | n/a  | 100  | no  |
+| ram_role_name | A predefined RAM role name to attach to the security management instance | string | n/a | "" | no |
 | instance_tags  | (Optional) A map of tags as key=value pairs. All tags will be added to the Management ECS Instance  | map(string)  | n/a  | {}  | no  |
 |   |   |   |   |   |   |
 | version_license  | Version and license of the Check Point Security Management  | string | - R81-BYOL | R81-BYOL |

@@ -1,6 +1,6 @@
 # Check Point Gateway Master Terraform module for AliCloud
 
-Terraform module which deploys a Check Point Security Gateway into a new VPC.
+Terraform module which deploys a Check Point Security Gateway into a new VPC on AliCloud.
 
 These types of Terraform resources are supported:
 * [Security group](https://www.terraform.io/docs/providers/alicloud/r/security_group.html)
@@ -22,13 +22,13 @@ terraform apply -target=alicloud_route_table.private_vswitch_rt -auto-approve &&
 >Once terraform is updated, we will update accordingly.
 
 - Best practice is to configure credentials in the Environment variables - [Alicloud provider](https://registry.terraform.io/providers/aliyun/alicloud/latest/docs)
-- Static credentials can be provided by adding an alicloud_access_key_ID and alicloud_secret_access_key in gateway_master/**terraform.tfvars** file as follows:
+- Static credentials can be provided by adding an alicloud_access_key_ID and alicloud_secret_access_key in gateway-master/**terraform.tfvars** file as follows:
 ```
 region = "us-east-1"
 alicloud_access_key_ID = "12345"
 alicloud_secret_access_key = "12345"
 ```
-  - In addition, you need to call these variables in the provider and pass it on to the gateway module in gateway_master/**main.tf** file as follows:
+  - In addition, you need to call these variables in the provider and pass it on to the gateway module in gateway-master/**main.tf** file as follows:
   ```
   provider "alicloud" {
     region     = var.region
@@ -45,7 +45,7 @@ alicloud_secret_access_key = "12345"
    }
 ```
 ## Usage
-- Fill all variables in the gateway_master/**terraform.tfvars** file with proper values (see below for variables descriptions).
+- Fill all variables in the gateway-master/**terraform.tfvars** file with proper values (see below for variables descriptions).
 - From a command line initialize the Terraform configuration directory:
         terraform init
 - Create an execution plan:
@@ -61,18 +61,15 @@ alicloud_secret_access_key = "12345"
 | public_vswitchs_map | A map of pairs {availability-zone = vswitch-suffix-number}. Each entry creates a vswitch. Minimum 1 pair.  (e.g. {\"us-east-1a\" = 1} ) | map | n/a |  n/a | yes |
 | private_vswitchs_map | A map of pairs {availability-zone = vswitch-suffix-number}. Each entry creates a vswitch. Minimum 1 pair. (e.g. {\"us-east-1a\" = 2} ) | map | n/a | n/a | yes |
 | vswitchs_bit_length | Number of additional bits with which to extend the vpc cidr. For example, if given a vpc_cidr ending in /16 and a vswitchs_bit_length value of 4, the resulting vswitch address will have length /20. | number | n/a | n/a | yes |
-|  |  |  |  |  |
 | gateway_name | The name tag of the Security Gateway instances (optional) | string | n/a | "Check-Point-Gateway-tf" | no |
-| gateway_instance_type | The instance type of the Secutiry Gateways | string | - c5.large <br/> - c5.xlarge <br/> - c5.2xlarge <br/> - c5.4xlarge <br/> - c5.9xlarge <br/> - c5.18xlarge <br/> - c5n.large <br/> - c5n.xlarge <br/> - c5n.2xlarge <br/> - c5n.4xlarge <br/> - c5n.9xlarge <br/> - c5n.18xlarge | "c5.xlarge" | no |
+| gateway_instance_type | The instance type of the Security Gateways | string | - ecs.c5.large <br/> - ecs.c5.xlarge <br/> - ecs.c5.2xlarge <br/> - ecs.c5.4xlarge <br/> - ecs.c5.9xlarge <br/> - ecs.c5.18xlarge <br/> - ecs.c5n.large <br/> - ecs.c5n.xlarge <br/> - ecs.c5n.2xlarge <br/> - c5n.4xlarge <br/> - c5n.9xlarge <br/> - ecs.c5n.18xlarge | "ecs.c5.xlarge" | no |
 | key_name | The ECS Key Pair name to allow SSH access to the instances | string  | n/a | n/a | yes |
 | allocate_and_associate_eip | If set to TRUE, an elastic IP will be allocated and associated with the launched instance | bool | true/false | true | no |
 | volume_size | Root volume size (GB) - minimum 100 | number | n/a | 100 | no |
-|  |  |  |  |  |
-| gateway_version | Gateway version & license | string | - R81-BYOL | R81-BYOL |
+| gateway_version | Gateway version and license | string | - R81-BYOL | R81-BYOL |
 | admin_shell | Set the admin shell to enable advanced command line configuration. | string | - /etc/cli.sh <br/> - /bin/bash <br/> - /bin/csh <br/> - /bin/tcsh | "/etc/cli.sh" | no |
 | gateway_SIC_Key | The Secure Internal Communication key for trusted connection between Check Point components. Choose a random string consisting of at least 8 alphanumeric characters | string | n/a | n/a | yes |
 | password_hash | Admin user's password hash (use command \"openssl passwd -6 PASSWORD\" to get the PASSWORD's hash) (optional) | string | n/a | "" | no |
-|  |  |  |  |  |
 | resources_tag_name | (optional) | string | n/a | "" | no |
 | gateway_hostname | (optional) | string | n/a | "" | no |
 | allow_upload_download | Automatically download Blade Contracts and other important data. Improve product experience by sending data to Check Point | bool | n/a | true | no |
