@@ -43,24 +43,22 @@ provider "alicloud" {
 | Name          | Description   | Type          | Allowed values | Default       | Required      |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | vpc_id | The VPC id in which to deploy | string | n/a | n/a | yes |
-| cluster_vswitch_id | The cluster vswitch of the security gateways | string | n/a | n/a | yes |
-| mgmt_vswitch_id | The management vswitch of the security gateways. Connect the Security Gateways to the Management Server with the ENI in this vswitch. | string | n/a | n/a | yes |
-| private_vswitch_id | The private vswitch of the security gateways | string | n/a | n/a | yes |
+| cluster_vswitch_id | The cluster vswitch of the security gateways | string | Subnet in the same availability zone with mgmt_vswitch_id and private_vswitch_id | n/a | yes |
+| mgmt_vswitch_id | The management vswitch of the security gateways Connect the Security Gateways to the Management Server with the ENI in this vswitch. | string | Subnet in the same availability zone with cluster_vswitch_id and private_vswitch_id | n/a | yes |
+| private_vswitch_id | The private vswitch of the security gateways | string | Subnet in the same availability zone with cluster_vswitch_id and mgmt_vswitch_id | n/a | yes |
 | private_route_table | (optional) Sets '0.0.0.0/0' route to the Active Cluster member instance in the specified route table (e.g. vtb-12a34567). Route table cannot have an existing 0.0.0.0/0 route. If empty - traffic will not be routed through the Security Gateway, this requires manual configuration in the Route Table. | string | n/a | "" | no |
-|  |  |  |  |  |
-| gateway_name | (optional) (Optional) The name tag of the Cluster's Security Gateway instances | string | n/a | "Check-Point-Cluster-tf" | no |
+| gateway_name | (optional) The name tag of the Cluster's Security Gateway instances | string | n/a | "Check-Point-Cluster-tf" | no |
 | gateway_instance_type | The instance type of the Security Gateways | string | - ecs.c5.large <br/> - ecs.c5.xlarge <br/> - ecs.c5.2xlarge <br/> - ecs.c5.3xlarge <br/> - ecs.c5.4xlarge <br/> - ecs.c5.6xlarge <br/> - ecs.c5.8xlarge <br/> - c5n.16xlarge | "ecs.c5.xlarge" | no |
 | key_name | The ECS Key Pair name to allow SSH access to the instances | string  | n/a | n/a | yes |
-| allocate_and_associate_eip | If set to TRUE, an elastic IP will be allocated and associated with each cluster member, in addition to the cluster Elastic IPs | bool | true/false | true | no |
+| allocate_and_associate_eip | If set to TRUE, an elastic IP will be allocated and associated with each cluster member, in addition to the cluster Elastic IP | bool | true/false | true | no |
 | volume_size | Root volume size (GB) - minimum 100 | number | n/a | 100 | no |
-| ram_role_name | A predefined RAM role name to attach to the cluster instances | string | n/a | "" | no |
-| instance_tags | (Optional) A map of tags as key=value pairs. All tags will be added to the Gateway ECS Instance | map(string) | n/a | {}} | no |
-|  |  |  |  |  |
-| gateway_version | Gateway version & license | string | - R81-BYOL | R81-BYOL | no |
+| ram_role_name | A predefined RAM role name to attach to the cluster's security gateway instances | string | n/a | "" | no |
+| instance_tags | (Optional) A map of tags as key=value pairs. All tags will be added to the Gateway ECS Instances | map(string) | n/a | {}} | no |
+| gateway_version | Gateway version and license | string | - R81-BYOL | R81-BYOL | no |
 | admin_shell | Set the admin shell to enable advanced command line configuration. | string | - /etc/cli.sh <br/> - /bin/bash <br/> - /bin/csh <br/> - /bin/tcsh | "/etc/cli.sh" | no |
 | gateway_SIC_Key | The Secure Internal Communication key for trusted connection between Check Point components. Choose a random string consisting of at least 8 alphanumeric characters | string | n/a | n/a | yes |
 | gateway_password_hash | (optional) Admin user's password hash (use command \"openssl passwd -6 PASSWORD\" to get the PASSWORD's hash) | string | n/a | "" | no |
-|  |  |  |  |  |
+| management_ip_address | (Optional) The Security Management IP address (public or private IP address). If provided, a static-route [management_ip --> via eth1] will be added to the Cluster's Security Gateway instances. If not provided, the static-route will need to be added manually post-deployment by user | string | n/a | "" | no |
 | resources_tag_name | (optional) Name tag prefix of the resources | string | n/a | "" | no |
 | gateway_hostname | (optional) The host name will be appended with member-a/b accordingly | string | n/a | "" | no |
 | allow_upload_download | Automatically download Blade Contracts and other important data. Improve product experience by sending data to Check Point | bool | n/a | true | no |
@@ -138,7 +136,7 @@ ram_role_name = ""
 
 | Template Version | Description   |
 | ---------------- | ------------- |
-| __VERSION__ | First release of Check Point CloudGaurd Gateway Terraform deployment into an existing VPC in Alibaba cloud. |
+| __VERSION__ | First release of Check Point CloudGuard Cluster Terraform deployment into an existing VPC in Alibaba cloud. |
 | | | |
 
 ## License
