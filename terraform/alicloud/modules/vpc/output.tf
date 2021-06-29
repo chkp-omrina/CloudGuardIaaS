@@ -10,3 +10,6 @@ output "public_vswitchs_ids_list" {
 output "private_vswitchs_ids_list" {
   value = [for private_vswitch in alicloud_vswitch.privateVsw : private_vswitch.id]
 }
+output "management_vswitchs_ids_list" {
+  value = length(keys(var.management_vswitchs_map)) > 0 ? [for management_vswitch in alicloud_vswitch.managementVsw : management_vswitch.id] : []
+}

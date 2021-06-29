@@ -8,6 +8,11 @@ variable "public_vswitchs_map" {
   type = map(string)
   description = "A map of pairs {availability-zone = vswitch-suffix-number}. Each entry creates a vswitch. Minimum 1 pair.  (e.g. {\"cn-hangzhou-e\" = 1} ) "
 }
+variable "management_vswitchs_map" {
+  type = map(string)
+  description = "(Optional) A map of pairs {availability-zone = vswitch-suffix-number}. Each entry creates a vswitch. Minimum 1 pair.  (e.g. {\"cn-hangzhou-e\" = 3} ) "
+  default = {}
+}
 variable "private_vswitchs_map" {
   type = map(string)
   description = "A map of pairs {availability-zone = vswitch-suffix-number}. Each entry creates a vswitch. Minimum 1 pair.  (e.g. {\"cn-hangzhou-f\" = 2} ) "
